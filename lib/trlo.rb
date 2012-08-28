@@ -6,6 +6,6 @@ module Trlo
 end
 
 require 'trlo/client'
-require 'trlo/data-row'
-require 'trlo/data-table'
+require 'trlo/data_row'
+require 'trlo/data_table'
 require 'trlo/ui'

@@ -20,4 +20,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "hirb"
   gem.add_dependency "colored"
   gem.add_dependency "highline"
+
+  gem.add_development_dependency "pry"
 end

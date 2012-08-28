@@ -35,7 +35,7 @@ module Trlo
   end
 
 
-  class ProjectTable < DataTable
+  class BoardTable < DataTable
 
     def self.fields
       [:name]
