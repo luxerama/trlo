@@ -17,11 +17,11 @@ module Trlo
     end
 
     def get_board(board_id)
-      # Board.find(board_id)
+      Board.find(board_id)
     end
 
     def get_boards
-      # Member.find(@config[:username]).boards
+      Member.find(@config[:username]).boards
     end
   end
 end

@@ -51,9 +51,9 @@ module Trlo
         project = @client.get_board(board.id)
         # membership = @client.get_membership(project, @global_config[:email])
         # config[:user_name], config[:user_id], config[:user_initials] = membership.name, membership.id, membership.initials
-        # congrats "Thanks! I'm saving this project's info",
-        #   "in #{LOCAL_CONFIG_PATH}: remember to .gitignore it!"
-        # save_config(config, LOCAL_CONFIG_PATH)
+        congrats "Thanks! I'm saving this project's info",
+          "in #{LOCAL_CONFIG_PATH}: remember to .gitignore it!"
+        save_config(config, LOCAL_CONFIG_PATH)
       end
       config
     end
@@ -108,5 +108,8 @@ module Trlo
       end
     end
 
+    def ask(msg)
+      @io.ask("#{msg.bold}")
+    end
   end
 end
