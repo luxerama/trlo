@@ -23,5 +23,9 @@ module Trlo
     def get_boards
       Member.find(@config[:username]).boards
     end
+
+    def get_user
+      Member.find(@config[:username])
+    end
   end
 end

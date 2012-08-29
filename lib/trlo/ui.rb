@@ -14,9 +14,9 @@ module Trlo
       @client = Trlo::Client.new(@global_config)
       @local_config = load_local_config
       @board = @client.get_board(@local_config[:board_id])
-      # command = args[0].to_sym rescue :my_work
-      # @params = args[1..-1]
-      # commands.include?(command.to_sym) ? send(command.to_sym) : help
+      command = args[0].to_sym rescue :my_work
+      @params = args[1..-1]
+      commands.include?(command.to_sym) ? send(command.to_sym) : help
     end
 
     def load_global_config
@@ -48,7 +48,7 @@ module Trlo
         boards = Trlo::BoardTable.new(@client.get_boards)
         board = select("Please select the board for the current directory", boards)
         config[:board_id], config[:board_name] = board.id, board.name
-        project = @client.get_board(board.id)
+        # project = @client.get_board(board.id)
         # membership = @client.get_membership(project, @global_config[:email])
         # config[:user_name], config[:user_id], config[:user_initials] = membership.name, membership.id, membership.initials
         congrats "Thanks! I'm saving this project's info",
@@ -111,5 +111,45 @@ module Trlo
     def ask(msg)
       @io.ask("#{msg.bold}")
     end
+
+    def help
+      if ARGV[0] && ARGV[0] != 'help'
+        message("Command #{ARGV[0]} not recognized. Showing help.")
+      end
+
+      title("Command line usage")
+      puts("trlo                                     # show all available stories")
+      puts("trlo todo                                # show all unscheduled tasks")
+      puts("trlo create    [title] ~[owner] ~[type]  # create a new task")
+      puts("trlo show      [id]                      # shows detailed info about a task")
+      puts("trlo open      [id]                      # open a task in the browser")
+      puts("trlo assign    [id] [member]             # assign owner")
+      puts("trlo comment   [id] [comment]            # add a comment")
+      puts("trlo estimate  [id] [0-3]                # estimate a task in points scale")
+      puts("trlo start     [id]                      # mark a task as started")
+      puts("trlo finish    [id]                      # indicate you've finished a task")
+      puts("trlo deliver   [id]                      # indicate the task is delivered");
+      puts("trlo accept    [id]                      # mark a task as accepted")
+      puts("trlo reject    [id] [reason]             # mark a task as rejected, explaining why")
+      puts("trlo find      [query]                   # looks in your tasks by title and presents it")
+      puts("trlo done      [id] ~[0-3] ~[comment]    # lazy mans finish task, does everything")
+      puts("trlo list      [member]                  # list all tasks for another pt user")
+      puts("trlo list      all                       # list all tasks for all users")
+      puts("trlo updates   [number]                  # shows number recent activity from your current project")
+      puts("")
+      puts("All commands can be ran without arguments for a wizard like UI.")
+    end
+
+    def commands
+      (public_methods - Object.public_methods + [:help]).sort.map{ |c| c.to_sym}
+    end
+
+    def todo
+      title("My Work for #{@client.get_user.full_name} in")
+      # stories = @client.get_my_work(@project, @local_config[:user_name])
+      # stories = stories.select { |story| story.current_state == "unscheduled" }
+      # PT::StoriesTable.new(stories).print @global_config
+    end
+
   end
 end
